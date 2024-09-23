@@ -1,20 +1,33 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
 
-        String s = "abbcccdddd";
+        String s = "(){}[]";
+        boolean valid = bracketsValidation(s);
+        System.out.println(valid);
 
-        Map<Character, Integer> map = new HashMap<>();
+        String s2 = "(){}[[]{]";
+        boolean valid2 = bracketsValidation(s2);
+        System.out.println(valid2);
+    }
+
+    private static boolean bracketsValidation(String s) {
+        Stack<Character> stack = new Stack<>();
 
         for (char ch : s.toCharArray()) {
-            if (map.containsKey(ch)) {
-                map.put(ch, map.get(ch) + 1);
+            if (ch == '(' || ch == '[' || ch == '{') {
+                stack.push(ch);
+            } else if (ch == ')' && !stack.isEmpty() && stack.peek() == '(') {
+                stack.pop();
+            } else if (ch == ']' && !stack.isEmpty() && stack.peek() == '[') {
+                stack.pop();
+            } else if (ch == '}' && !stack.isEmpty() && stack.peek() == '{') {
+                stack.pop();
             } else {
-                map.put(ch, 1);
+                return false;
             }
         }
-        System.out.println(map);
+        return stack.isEmpty();
     }
 }
